@@ -8,26 +8,29 @@
 <div class="container calendar">
   <div class="row">
       <div class="col-md-6 text-center">
+          <span>P</span>
           {{currentMonth}}
+          <span>N</span>
       </div>
+      
   </div>
   <div class="row">
-      <ul class="days col-md-6">
+      <ul class="col-md-6">
+        <li class="day">Su</li>
         <li class="day">M</li>
         <li class="day">T</li>
         <li class="day">W</li>
         <li class="day">Th</li>
         <li class="day">F</li>
         <li class="day">Sa</li>
-        <li class="day">Su</li>
       </ul>
   </div>
-  <div class="row">
-      <ul class="days col-md-6">
-        <li class="day" ng-repeat="day in month.week">
+  <div class="row" ng-repeat="week in weeks">
+      <div class="col-md-6">
+        <div class="day" ng-repeat="day in week.days">
           {{day.number}}
-        </li>
-      </ul>
+        </div>
+      </div>
   </div>
 </div>
 <div class="container">

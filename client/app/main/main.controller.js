@@ -17,14 +17,12 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     }, 1000);
 
     $scope.now = moment();
-    $scope.month = buildMonth($scope.now);
+    $scope.weeks = buildMonth($scope.now);
 
     function buildWeek(week, month) {
     	var days = [];
     	var day = moment(week.toString(), 'WW').startOf('week');
-    	console.log(day, month);
     	for (var i = 0; i < 7; i++) {
-    		console.log(days);
     		days.push({
     			moment: day,
     			number: day.format('DD'),
@@ -32,7 +30,6 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     			isToday: day.isSame(new Date(), 'day')
     		});
     		day = moment(day).add(1, 'day');
-    		console.log(day);
     	}
     	return days
     } 
@@ -44,14 +41,10 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     	var month = day.month();
     	var startNum = startDay.week();
     	var endNum = endDay.week();
-    	console.log(day, startDay, endDay, startNum, endNum, month);
     	for (var i = startNum; i <= endNum; i++) {
-    		console.log(weeks);
-    		weeks.push(buildWeek(i, month));
+    		weeks.push({days: buildWeek(i, month)});
     	}
     	return weeks
-
-    	// console.log(startWeek, endWeek, weekNumber);
     }
 
 });

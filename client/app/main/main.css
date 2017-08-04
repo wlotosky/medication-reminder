@@ -29,8 +29,9 @@
     border-top: 1px solid #E5E5E5;
 }
 
-.days li {
+.days li, .day {
     list-style: none;
     display: inline-block;
     width: calc((100% - 30px) / 7);
+    text-align: center;
 }
