@@ -8,11 +8,10 @@
 <div class="container calendar">
   <div class="row">
       <div class="col-md-6 text-center">
-          <span>P</span>
-          {{currentMonth}}
-          <span>N</span>
+          <span ng-click="previousMonth()">P</span>
+          {{displayMonth}}
+          <span ng-click="nextMonth()">N</span>
       </div>
-      
   </div>
   <div class="row">
       <ul class="col-md-6">

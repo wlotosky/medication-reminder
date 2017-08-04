@@ -12,13 +12,14 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     $window.setInterval(function () {
 
         $scope.currentTime = moment().format('MMMM Do YYYY, h:mm:ss a');
-        $scope.currentMonth = moment().format('MMMM YYYY');
         $scope.$apply();
     }, 1000);
 
     $scope.now = moment();
+    $scope.displayMonth = $scope.now.format('MMMM YYYY');
     $scope.weeks = buildMonth($scope.now);
 
+    // These functions build the calendar component
     function buildWeek(week, month) {
     	var days = [];
     	var day = moment(week.toString(), 'WW').startOf('week');
@@ -30,9 +31,9 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     			isToday: day.isSame(new Date(), 'day')
     		});
     		day = moment(day).add(1, 'day');
-    	}
-    	return days
-    } 
+    	};
+    	return days;
+    };
 
     function buildMonth(day) {
     	var weeks = [];
@@ -43,9 +44,24 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     	var endNum = endDay.week();
     	for (var i = startNum; i <= endNum; i++) {
     		weeks.push({days: buildWeek(i, month)});
-    	}
-    	return weeks
-    }
+    	};
+    	return weeks;
+    };
+
+    // Selects the next month
+    $scope.nextMonth = function() {
+    	$scope.displayMonth = moment($scope.displayMonth).add(1, 'month').format('MMMM YYYY');
+    	$scope.weeks = buildMonth(moment($scope.displayMonth));
+    	console.log('hey', $scope.displayMonth);
+    };
+
+    // Selects the previous month
+    $scope.previousMonth = function() {
+    	$scope.displayMonth = moment($scope.displayMonth).subtract(1, 'month').format('MMMM YYYY');
+    	$scope.weeks = buildMonth(moment($scope.displayMonth));
+    	console.log('also hey', $scope.displayMonth);
+    };
+
 
 });
 
