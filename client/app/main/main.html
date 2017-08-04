@@ -5,6 +5,31 @@
       <h1>{{currentTime}}</h1>
   </div>
 </header>
+<div class="container calendar">
+  <div class="row">
+      <div class="col-md-6 text-center">
+          {{currentMonth}}
+      </div>
+  </div>
+  <div class="row">
+      <ul class="days col-md-6">
+        <li class="day">M</li>
+        <li class="day">T</li>
+        <li class="day">W</li>
+        <li class="day">Th</li>
+        <li class="day">F</li>
+        <li class="day">Sa</li>
+        <li class="day">Su</li>
+      </ul>
+  </div>
+  <div class="row">
+      <ul class="days col-md-6">
+        <li class="day" ng-repeat="day in month.week">
+          {{day.number}}
+        </li>
+      </ul>
+  </div>
+</div>
 <div class="container">
   <div class="row">
     <div class="col-lg-6 col-lg-offset-3 text-center">
