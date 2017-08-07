@@ -17,12 +17,12 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
     $scope.now = moment();
     $scope.displayMonth = $scope.now.format('MMMM YYYY');
-    $scope.weeks = buildMonth($scope.now);
+    $scope.weeks = buildMonth(moment($scope.displayMonth, 'MMMM YYYY'));
 
     // These functions build the calendar component
     function buildWeek(week, month) {
     	var days = [];
-    	var day = moment(week.toString(), 'WW').startOf('week');
+    	var day = moment(week.startOf('week'));
     	for (var i = 0; i < 7; i++) {
     		days.push({
     			moment: day,
@@ -35,15 +35,16 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     	return days;
     };
 
+    // There is an issue with Decembers
     function buildMonth(day) {
     	var weeks = [];
-    	var startDay = day.clone().startOf('month');
-    	var endDay = day.clone().endOf('month');
+    	var weekCounter = day.clone().startOf('month');
     	var month = day.month();
-    	var startNum = startDay.week();
-    	var endNum = endDay.week();
+    	var startNum = day.clone().startOf('month').week() + (day.startOf('month').year() * 53);
+    	var endNum = day.clone().endOf('month').week() + (day.endOf('month').endOf('week').year() * 53);
     	for (var i = startNum; i <= endNum; i++) {
-    		weeks.push({days: buildWeek(i, month)});
+    		weeks.push({days: buildWeek(weekCounter, month)});
+    		weekCounter = moment(weekCounter).add(1, 'week');
     	};
     	return weeks;
     };
@@ -52,16 +53,17 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     $scope.nextMonth = function() {
     	$scope.displayMonth = moment($scope.displayMonth).add(1, 'month').format('MMMM YYYY');
     	$scope.weeks = buildMonth(moment($scope.displayMonth));
-    	console.log('hey', $scope.displayMonth);
     };
 
     // Selects the previous month
     $scope.previousMonth = function() {
     	$scope.displayMonth = moment($scope.displayMonth).subtract(1, 'month').format('MMMM YYYY');
     	$scope.weeks = buildMonth(moment($scope.displayMonth));
-    	console.log('also hey', $scope.displayMonth);
     };
 
+    $scope.daySelector = function() {
+    	console.log(this);
+    }
 
 });
 
