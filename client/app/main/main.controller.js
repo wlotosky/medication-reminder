@@ -2,11 +2,12 @@
 
 angular.module('medicationReminderApp').controller('MainCtrl', function ($scope, $http, $window) {
 
-    var start = moment().format('MM/DD/YYYY'),
+    var start = moment().startOf('day').format('MM/DD/YYYY'),
         end = moment().add(1, 'day').format('MM/DD/YYYY');
 
     $http.get('/api/medications?start=' + start + '&end=' + end).then(function (meds) {
         $scope.meds = meds.data;
+        console.log(meds.data);
     });
 
     $window.setInterval(function () {
@@ -36,7 +37,6 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     	return days;
     };
 
-    // There is an issue with Decembers
     function buildMonth(day) {
     	var weeks = [];
     	var weekCounter = day.clone().startOf('month');
@@ -63,6 +63,7 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     };
 
     $scope.daySelector = function() {
+    	// display the selected days meds
     	$scope.meds = {};
     	start = this.day.moment.format('MM/DD/YYYY');
     	end = moment(start).add(1, 'day').format('MM/DD/YYYY');
@@ -70,6 +71,13 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     	$http.get('/api/medications?start=' + start + '&end=' + end).then(function (meds) {
     	    $scope.meds = meds.data;
     	});
+    	// change isSelected to true
+    	this.day.isSelected = true;
+    }
+
+    $scope.checkMedTime = function() {
+    	return false;
+    	console.log(this.day)
     }
 
 });
