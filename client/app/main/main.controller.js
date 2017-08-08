@@ -28,7 +28,8 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     			moment: day,
     			number: day.format('DD'),
     			isCurrentMonth: month === day.month(),
-    			isToday: day.isSame(new Date(), 'day')
+    			isToday: day.isSame(new Date(), 'day'),
+    			isSelected: false
     		});
     		day = moment(day).add(1, 'day');
     	};
@@ -62,7 +63,13 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     };
 
     $scope.daySelector = function() {
-    	console.log(this);
+    	$scope.meds = {};
+    	start = this.day.moment.format('MM/DD/YYYY');
+    	end = moment(start).add(1, 'day').format('MM/DD/YYYY');
+    	console.log(start, end);
+    	$http.get('/api/medications?start=' + start + '&end=' + end).then(function (meds) {
+    	    $scope.meds = meds.data;
+    	});
     }
 
 });

@@ -14,19 +14,19 @@
       </div>
   </div>
   <div class="row">
-      <ul class="col-md-6">
-        <li class="day">Su</li>
-        <li class="day">M</li>
-        <li class="day">T</li>
-        <li class="day">W</li>
-        <li class="day">Th</li>
-        <li class="day">F</li>
-        <li class="day">Sa</li>
-      </ul>
+      <div class="col-md-6">
+        <div class="day">Su</div>
+        <div class="day">M</div>
+        <div class="day">T</div>
+        <div class="day">W</div>
+        <div class="day">Th</div>
+        <div class="day">F</div>
+        <div class="day">Sa</div>
+      </div>
   </div>
   <div class="row" ng-repeat="week in weeks">
       <div class="col-md-6">
-        <div class="day" ng-repeat="day in week.days" ng-click="daySelector()">
+        <div class="day" ng-repeat="day in week.days" ng-click="daySelector()" ng-class="{'currentDay': day.isToday}">
           {{day.number}}
         </div>
       </div>
