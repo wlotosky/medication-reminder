@@ -7,14 +7,26 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
     $http.get('/api/medications?start=' + start + '&end=' + end).then(function (meds) {
         $scope.meds = meds.data;
-        console.log(meds.data);
     });
 
     $window.setInterval(function () {
-
         $scope.currentTime = moment().format('MMMM Do YYYY, h:mm:ss a');
         $scope.$apply();
     }, 1000);
+
+    $window.setInterval(function () {
+    	var medTime = moment($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a').subtract(5, 'm');
+        $scope.meds = $scope.meds.map(function(med) {
+        	if (moment(med.time).isBefore(medTime)) {
+        		med.show = true;
+        	} else {
+	        	med.show = false;
+        	}
+        	return med
+        });
+        console.log($scope.meds, medTime);
+        $scope.$apply();
+    }, 60000);
 
     $scope.now = moment();
     $scope.displayMonth = $scope.now.format('MMMM YYYY');
@@ -71,14 +83,6 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     	$http.get('/api/medications?start=' + start + '&end=' + end).then(function (meds) {
     	    $scope.meds = meds.data;
     	});
-    	// change isSelected to true
-    	this.day.isSelected = true;
     }
-
-    $scope.checkMedTime = function() {
-    	return false;
-    	console.log(this.day)
-    }
-
 });
 
