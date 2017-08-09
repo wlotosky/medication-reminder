@@ -10,9 +10,9 @@
   <div class="row">
       <div class="col-md-4 text-center">
           <div class="calendar-month">
-              <span ng-click="previousMonth()">P</span>
+              <span ng-click="previousMonth()" class="glyphicon glyphicon-arrow-left"></span>
               {{displayMonth}}
-              <span ng-click="nextMonth()">N</span>
+              <span ng-click="nextMonth()" class="glyphicon glyphicon-arrow-right"></span>
           </div>
       </div>
   </div>
@@ -29,7 +29,7 @@
   </div>
   <div class="row" ng-repeat="week in weeks">
       <div class="col-md-4">
-        <div class="day" ng-repeat="day in week.days" ng-click="daySelector()" ng-class="{'currentDay': day.isToday, 'currentMonth': !day.isCurrentMonth, 'selectedDay': isSelected}">
+        <div class="day" ng-repeat="day in week.days" ng-click="daySelector()" ng-class="{'currentDay': day.isToday, 'currentMonth': !day.isCurrentMonth, 'selectedDay': day.isSelected}">
           {{day.number}}
         </div>
       </div>
@@ -39,10 +39,13 @@
   <div class="row">
     <div class="col-lg-6 col-lg-offset-6">
         <div ng-repeat="m in meds | orderBy:'time'" class="med">
-            <button ng-show="m.show" ng-click="">Take</button>
-            <h3>{{m.time | date : 'hh:mm a'}}</h3>
-            <h4>{{m.name}}</h4>
-            <h4>{{m.dosage}}</h4>
+            <span class="glyphicon" ng-class="{'glyphicon-exclamation-sign' : m.missed}"></span>
+            <div class="med-text">
+              <h3>{{m.time | date : 'hh:mm a'}}</h3>
+              <h4>{{m.name}}</h4>
+              <h4>{{m.dosage}}</h4>
+              <button ng-show="m.show" ng-click="medTaken" class="completed-button">Completed</button>
+            </div>
         </div>
     </div>
   </div>

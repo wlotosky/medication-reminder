@@ -7,6 +7,12 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
     $http.get('/api/medications?start=' + start + '&end=' + end).then(function (meds) {
         $scope.meds = meds.data;
+        meds.data.filter(function(med) {
+        	console.log(med.time);
+        	if (!moment(med.time).isBefore($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a')) {
+        		return med
+        	} 
+        });
     });
 
     $window.setInterval(function () {
@@ -14,15 +20,26 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
         $scope.$apply();
     }, 1000);
 
+    // Shows the take button
     $window.setInterval(function () {
     	var medTime = moment($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a').subtract(5, 'm');
+    	var missedTime = moment($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a').add(10, 'm');
+    	console.log(medTime, missedTime);
         $scope.meds = $scope.meds.map(function(med) {
         	if (moment(med.time).isBefore(medTime)) {
         		med.show = true;
         	} else {
 	        	med.show = false;
         	}
-        	return med
+        	return med;
+        });
+        $scope.meds = $scope.meds.map(function(med) {
+        	if(moment(med.time).isBefore(missedTime)) {
+        		med.missed = true;
+        	} else {
+        		med.missed = false;
+        	}
+        	return med;
         });
         console.log($scope.meds, medTime);
         $scope.$apply();
@@ -75,7 +92,7 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     };
 
     $scope.daySelector = function() {
-    	// display the selected days meds
+    	// display the selected day's meds
     	$scope.meds = {};
     	start = this.day.moment.format('MM/DD/YYYY');
     	end = moment(start).add(1, 'day').format('MM/DD/YYYY');
@@ -83,6 +100,12 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     	$http.get('/api/medications?start=' + start + '&end=' + end).then(function (meds) {
     	    $scope.meds = meds.data;
     	});
+    }
+
+    $scope.medTaken = function() {
+    	this.m.completed = true;
+    	this.m.missed = false;
+    	console.log(this.m);
     }
 });
 
