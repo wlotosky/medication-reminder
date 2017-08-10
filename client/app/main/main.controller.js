@@ -25,7 +25,6 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 	function timeChecker() {
 		var medTime = moment($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a').add(5, 'm');
 		var missedTime = moment($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a').subtract(10, 'm');
-		console.log(medTime, missedTime);
 		// Show complete button
 		$scope.meds = $scope.meds.map(function(med) {
 			if (moment(med.time).isBefore(medTime)) {
@@ -45,7 +44,6 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 			}
 			return med;
 		});
-		console.log($scope.meds, medTime);
 		$scope.$apply();
 	}
 

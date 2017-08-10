@@ -6,16 +6,16 @@
 	</div>
 </header>
 <main>
-	<div class="column-left">
+	<div class="column-left col-lg-6 col-md-8 col-sm-10 col-xs-12">
 		<section class="calendar clearfix">
-			<div class="col-lg-4 col-md-6 text-center calendar-row">
+			<div class="text-center calendar-row">
 				<div class="calendar-month">
 					<span ng-click="previousMonth()" class="glyphicon glyphicon-arrow-left"></span>
 					{{displayMonth}}
 					<span ng-click="nextMonth()" class="glyphicon glyphicon-arrow-right"></span>
 				</div>
 			</div>
-			<div class="col-lg-4 col-md-6 calendar-row">
+			<div class="calendar-row">
 				<div class="week-days">Su</div>
 				<div class="week-days">M</div>
 				<div class="week-days">T</div>
@@ -24,7 +24,7 @@
 				<div class="week-days">F</div>
 				<div class="week-days">Sa</div>
 			</div>
-			<div class="col-lg-4 col-md-6 calendar-row" ng-repeat="week in weeks">
+			<div class="calendar-row" ng-repeat="week in weeks">
 				<div class="day" ng-repeat="day in week.days" ng-click="daySelector()" ng-class="{
 					'currentDay': day.isToday, 
 					'currentMonth': !day.isCurrentMonth, 
@@ -51,7 +51,7 @@
 			</div>
 		</section>
 	</div>
-	<section class="col-lg-6 med-list clearfix">
+	<section class="col-lg-6 col-md-8 col-sm-10 col-xs-12 med-list clearfix">
 		<header class="medList-header">
 			<h2>Today's Medications</h2>
 		</header>

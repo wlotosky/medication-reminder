@@ -41,15 +41,6 @@ main {
 	flex-wrap: wrap;
 }
 
-.med-list {
-	width: 40%;
-	margin-top: 75px;
-}
-
-.column-left {
-	width: 40%;
-}
-
 .calendar {
 	margin-top: 75px;
 }
@@ -68,10 +59,6 @@ main {
 	right: 0;
 	transform: translate(-200%, -50%);
 	cursor: pointer;
-}
-
-.col-lg-4 {
-	font-size: 0;
 }
 
 .week-days {
@@ -101,6 +88,7 @@ main {
 	padding: 10px 15px;
 	background-color: #4393B9;
 	color: #F5F5F5;
+	position: relative;
 }
 
 .currentDay {
@@ -119,6 +107,7 @@ main {
 
 .calendar-row {
 	width: 100%;
+	font-size: 0;
 }
 
 /*MEDS*/
@@ -129,6 +118,10 @@ main {
 	background-color: #F5F5F5;
 	color: #4393B9;
 	display: flex;
+}
+
+.med-list {
+	margin-top: 75px;
 }
 
 .medList-header {
@@ -150,6 +143,9 @@ main {
 	background-color: #4393B9;
 	color: #F5F5F5;
 	padding: 30px 100px;
+	@media(max-width: 480px) {
+		padding: 30px 50px;
+	}
 }
 
 .med-action {
@@ -173,13 +169,20 @@ main {
 	bottom: 0;
 	font-size: 18px;
 	text-transform: uppercase;
+	padding: 10px;
+	transition: all 0.3s;
+}
+
+.completed-button:hover {
+	color: black;
+	font-weight: 600;
 }
 
 .alert-icon {
 	font-size: 80px;
 	width: 100%;
 	text-align: center;
-	margin-top: 35px;
+	margin-top: 25px;
 }
 
 .missed-list {
