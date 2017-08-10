@@ -7,24 +7,26 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
     $http.get('/api/medications?start=' + start + '&end=' + end).then(function (meds) {
         $scope.meds = meds.data;
-        meds.data.filter(function(med) {
-        	console.log(med.time);
-        	if (!moment(med.time).isBefore($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a')) {
-        		return med
-        	} 
-        });
     });
+
+    $scope.missedMeds = [];
+
+    $scope.minuteCounter = 0;
 
     $window.setInterval(function () {
         $scope.currentTime = moment().format('MMMM Do YYYY, h:mm:ss a');
+        if ($scope.minuteCounter % 60 === 0) {
+        	timeChecker();
+        }
+        $scope.minuteCounter++
         $scope.$apply();
     }, 1000);
 
-    // Shows the take button
-    $window.setInterval(function () {
-    	var medTime = moment($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a').subtract(5, 'm');
-    	var missedTime = moment($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a').add(10, 'm');
+    function timeChecker() {
+    	var medTime = moment($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a').add(5, 'm');
+    	var missedTime = moment($scope.currentTime, 'MMMM Do YYYY, h:mm:ss a').subtract(10, 'm');
     	console.log(medTime, missedTime);
+    	// Show complete button
         $scope.meds = $scope.meds.map(function(med) {
         	if (moment(med.time).isBefore(medTime)) {
         		med.show = true;
@@ -33,9 +35,11 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
         	}
         	return med;
         });
+        // Indicate med is missed and add to missed list
         $scope.meds = $scope.meds.map(function(med) {
-        	if(moment(med.time).isBefore(missedTime)) {
+        	if(moment(med.time).isBefore(missedTime) && !med.completed) {
         		med.missed = true;
+        		$scope.missedMeds.push(med);
         	} else {
         		med.missed = false;
         	}
@@ -43,7 +47,7 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
         });
         console.log($scope.meds, medTime);
         $scope.$apply();
-    }, 60000);
+    }
 
     $scope.now = moment();
     $scope.displayMonth = $scope.now.format('MMMM YYYY');
@@ -102,10 +106,14 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     	});
     }
 
-    $scope.medTaken = function() {
+    $scope.medTaken = function(med, id) {
     	this.m.completed = true;
     	this.m.missed = false;
-    	console.log(this.m);
+    	$http({
+    		url: 'api/medications/' + id,
+    		method: 'PUT',
+    		data: med 
+    	}).then()
     }
 });
 

@@ -8,6 +8,7 @@ var MedicationSchema = new Schema({
     dosage: String,
     time: Date,
     completed: Boolean,
+    missed: Boolean,
     d: {
         c: Date, //date created
         m: Date,  //date updated
